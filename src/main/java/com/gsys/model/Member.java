@@ -17,8 +17,8 @@ public class Member extends Person {
 	}
 
 	public Member(long id, String name, String address, String cpf, String photo, String dateOfBirth, 
-			String gender, List<MemberPayment> memberPayments) {
-		super(id, name, address, cpf, photo, dateOfBirth, gender);
+			String gender, List<MemberPayment> memberPayments,  String firstName, String lastName) {
+		super(id, name, address, cpf, photo, dateOfBirth, firstName, lastName);
 		this.memberPayments = memberPayments;
 	}
 

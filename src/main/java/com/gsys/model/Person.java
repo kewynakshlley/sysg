@@ -3,6 +3,7 @@ package com.gsys.model;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
@@ -10,30 +11,32 @@ public class Person {
 	@Id
 	@GeneratedValue
 	private long id;
-	@Column(name = "NAME")
-	private String name;
+	@Column(name = "FIRST_NAME")
+	private String firstName;
+	@Column(name = "LAST_NAME")
+	private String lastName;
 	@Column(name = "ADDRESS")
 	private String address;
 	@Column(name = "CPF")
 	private String cpf;
+	@Lob
 	@Column(name = "PHOTO")
 	private String photo;
 	@Column(name = "DATE_OF_BIRTH")
 	private String dateOfBirth;
-	@Column(name = "GENDER")
-	private String gender;
 	
 	public Person() {}
 
-	public Person(long id, String name, String address, String cpf, String photo, String dateOfBirth, String gender) {
+	public Person(long id, String name, String address, String cpf, String photo, String dateOfBirth,
+			String firstName, String lastName) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.address = address;
 		this.cpf = cpf;
 		this.photo = photo;
 		this.dateOfBirth = dateOfBirth;
-		this.gender = gender;
 	}
 
 	public long getId() {
@@ -44,12 +47,22 @@ public class Person {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	
+
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getAddress() {
@@ -84,14 +97,6 @@ public class Person {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -99,9 +104,9 @@ public class Person {
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
 		result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
-		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((photo == null) ? 0 : photo.hashCode());
 		return result;
 	}
@@ -130,17 +135,17 @@ public class Person {
 				return false;
 		} else if (!dateOfBirth.equals(other.dateOfBirth))
 			return false;
-		if (gender == null) {
-			if (other.gender != null)
+		if (firstName == null) {
+			if (other.firstName != null)
 				return false;
-		} else if (!gender.equals(other.gender))
+		} else if (!firstName.equals(other.firstName))
 			return false;
 		if (id != other.id)
 			return false;
-		if (name == null) {
-			if (other.name != null)
+		if (lastName == null) {
+			if (other.lastName != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!lastName.equals(other.lastName))
 			return false;
 		if (photo == null) {
 			if (other.photo != null)
@@ -149,7 +154,7 @@ public class Person {
 			return false;
 		return true;
 	}
-	
+
 	
 	
 	

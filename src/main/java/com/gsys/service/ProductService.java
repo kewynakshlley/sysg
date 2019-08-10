@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.gsys.core.dto.ProductDTO;
 import com.gsys.core.dto.ProductPaymentDTO;
+import com.gsys.core.util.NotificationUtil;
 import com.gsys.exception.DataNotFoundException;
 import com.gsys.model.Administrator;
+import com.gsys.model.Notification;
 import com.gsys.model.Product;
 import com.gsys.model.ProductPayment;
 import com.gsys.repository.AdministratorRepository;
@@ -26,6 +28,8 @@ public class ProductService {
 	private AdministratorRepository administratorRepository;
 	@Autowired
 	private ProductPaymentRepository productPaymentRepository;
+	@Autowired
+	private NotificationService notificationService;
 	
 	public List<Product> getAllProducts() {
 		return this.productRepository.findAll();
@@ -39,6 +43,8 @@ public class ProductService {
 
 	public ResponseEntity<?> createProduct(Product product) {
 		Product createdProduct = this.productRepository.save(product);
+		generateProductNotification(NotificationUtil.PRODUCT_REGISTRATION, product.getName(), 
+				NotificationUtil.REGISTRATION_CATEGORY);
 		return new ResponseEntity<Product>(createdProduct, HttpStatus.OK);
 	}
 
@@ -57,6 +63,8 @@ public class ProductService {
 			productPayment.getProductsList().add(pd);
 		}
 		admTemp.getProductPayment().add(productPayment);
+		generateProductNotification(NotificationUtil.PRODUCT_SALE, productPaymentDTO.getProducts().size()+" produtos vendidos",
+				NotificationUtil.SALE_CATEGORY);
 		this.administratorRepository.save(admTemp);
 		this.productPaymentRepository.save(productPayment);
 	}
@@ -65,5 +73,19 @@ public class ProductService {
 		return this.productPaymentRepository.findAll();
 		
 	}
+
+	public void editProduct(Product product) {
+		this.productRepository.save(product);
+		
+	}
+	
+	private void generateProductNotification(String title, String description, String category) {
+		Notification nf = new Notification();
+		nf.setTitle(title);
+		nf.setDescription(description);
+		nf.setCategory(category);
+		notificationService.saveNotification(nf);
+	}
+	
 
 }

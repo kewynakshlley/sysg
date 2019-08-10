@@ -45,14 +45,24 @@ public class EmployeeController {
 		employeeService.deleteEmployee(employeeId);
 	}
 	
-	@PostMapping(path = "/employees/check-in")
-	public ResponseEntity<?> employeeCheckIn(@RequestBody EmployeeFrequencyDTO ef) throws DataNotFoundException{
-		return employeeService.employeeCheckIn(ef);
+	@PostMapping(path = "/employees/arrival-check-in")
+	public ResponseEntity<?> employeeArrivalCheckIn(@RequestBody EmployeeFrequencyDTO ef) throws DataNotFoundException{
+		return employeeService.employeeArrivalCheckIn(ef);
 	}	
 	
-	@GetMapping(path = "/employee/{employeeId}/frequency")
-	public List<EmployeeFrequency> getEmployeeFrequency(@PathVariable long employeeId){
-		return employeeService.getEmployeeFrequency(employeeId);
+	@PostMapping(path = "/employees/exit-check-in")
+	public ResponseEntity<?> employeeExitCheckIn(@RequestBody EmployeeFrequencyDTO ef) throws DataNotFoundException{
+		return employeeService.employeeExitCheckIn(ef);
+	}	
+	
+	@GetMapping(path = "/employee/{employeeId}/exit-frequency")
+	public List<EmployeeFrequency> getEmployeeExitFrequency(@PathVariable long employeeId){
+		return employeeService.getEmployeeExitFrequency(employeeId);
+	}
+	
+	@GetMapping(path = "/employee/{employeeId}/arrival-frequency")
+	public List<EmployeeFrequency> getEmployeeArrivalFrequency(@PathVariable long employeeId){
+		return employeeService.getEmployeeArrivalFrequency(employeeId);
 	}
 	
 	@PutMapping(path = "employee/edit-employee")

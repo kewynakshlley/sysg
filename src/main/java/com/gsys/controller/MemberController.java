@@ -1,5 +1,4 @@
 package com.gsys.controller;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import com.gsys.model.Member;
 import com.gsys.model.MemberPayment;
 import com.gsys.service.MemberPaymentService;
 import com.gsys.service.MemberService;
+
 
 @RestController
 public class MemberController {
