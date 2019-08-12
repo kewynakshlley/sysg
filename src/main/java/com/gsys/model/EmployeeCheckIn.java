@@ -3,34 +3,42 @@ package com.gsys.model;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public class EmployeeCheckIn {
 	@Id
 	@GeneratedValue
 	private long id;
-	@Column(name = "DATE")
-	private Date date;
-	@Column(name = "HOUR")
-	private String hour;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@Column(name = "DATE_TIME")
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	@CreatedDate
+	private Date dateTime;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="EMPLOYEE_ID")
 	@JsonIgnore
-	private Employee employee;
+	private Employee employee = new Employee();
 	
 	public EmployeeCheckIn() {}
 
-	public EmployeeCheckIn(long id, Date date, String hour, Employee employee) {
+	public EmployeeCheckIn(long id, Date dateTime, Employee employee) {
 		super();
 		this.id = id;
-		this.date = date;
-		this.hour = hour;
+		this.dateTime = dateTime;
 		this.employee = employee;
 	}
 
@@ -42,21 +50,14 @@ public class EmployeeCheckIn {
 		this.id = id;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getDateTime() {
+		return dateTime;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
 	}
 
-	public String getHour() {
-		return hour;
-	}
-
-	public void setHour(String hour) {
-		this.hour = hour;
-	}
 
 	public Employee getEmployee() {
 		return employee;

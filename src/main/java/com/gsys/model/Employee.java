@@ -1,5 +1,6 @@
 package com.gsys.model;
 
+
 import java.util.List;
 
 import javax.persistence.Entity;

@@ -9,8 +9,8 @@ public class EmployeeArrival extends EmployeeCheckIn {
 	public EmployeeArrival() {
 	}
 
-	public EmployeeArrival(long id, Date date, String hour, Employee employee) {
-		super(id, date, hour, employee);
+	public EmployeeArrival(long id, Date date, Employee employee) {
+		super(id, date, employee);
 	}
 
 }

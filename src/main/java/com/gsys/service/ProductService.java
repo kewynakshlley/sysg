@@ -57,12 +57,14 @@ public class ProductService {
 		Administrator admTemp = administratorRepository.getOne(productPaymentDTO.getSellerId());
 		if(admTemp == null) throw new DataNotFoundException("Seller not found.");
 		productPayment.setProductSeller(admTemp);
+		productPayment.setTotalValue(productPaymentDTO.getTotalValue());
 		for(ProductDTO pdto: productPaymentDTO.getProducts()) {
 			Product pd = productRepository.getOne(pdto.getProductId());
 			pd.setStock(pd.getStock() - pdto.getAmount());
 			productPayment.getProductsList().add(pd);
 		}
 		admTemp.getProductPayment().add(productPayment);
+		
 		generateProductNotification(NotificationUtil.PRODUCT_SALE, productPaymentDTO.getProducts().size()+" produtos vendidos",
 				NotificationUtil.SALE_CATEGORY);
 		this.administratorRepository.save(admTemp);

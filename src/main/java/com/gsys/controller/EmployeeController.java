@@ -16,7 +16,8 @@ import com.gsys.core.dto.EmployeeFrequencyDTO;
 import com.gsys.exception.DataAlreadyExistsException;
 import com.gsys.exception.DataNotFoundException;
 import com.gsys.model.Employee;
-import com.gsys.model.EmployeeFrequency;
+import com.gsys.model.EmployeeArrival;
+import com.gsys.model.EmployeeExit;
 import com.gsys.service.EmployeeService;
 
 @RestController
@@ -55,13 +56,13 @@ public class EmployeeController {
 		return employeeService.employeeExitCheckIn(ef);
 	}	
 	
-	@GetMapping(path = "/employee/{employeeId}/exit-frequency")
-	public List<EmployeeFrequency> getEmployeeExitFrequency(@PathVariable long employeeId){
+	@GetMapping(path = "/employees/{employeeId}/exit-frequency")
+	public List<EmployeeExit> getEmployeeExitFrequency(@PathVariable long employeeId){
 		return employeeService.getEmployeeExitFrequency(employeeId);
 	}
 	
-	@GetMapping(path = "/employee/{employeeId}/arrival-frequency")
-	public List<EmployeeFrequency> getEmployeeArrivalFrequency(@PathVariable long employeeId){
+	@GetMapping(path = "/employees/{employeeId}/arrival-frequency")
+	public List<EmployeeArrival> getEmployeeArrivalFrequency(@PathVariable long employeeId){
 		return employeeService.getEmployeeArrivalFrequency(employeeId);
 	}
 	

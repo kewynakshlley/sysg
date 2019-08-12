@@ -1,6 +1,9 @@
 package com.gsys.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,16 +28,19 @@ public class ProductPayment {
 	  name = "payment_product", 
 	  joinColumns = @JoinColumn(name = "payment_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "product_id"))
-	private List<Product> productsList;
+	private List<Product> productsList = new ArrayList<>();
+	@Column(name = "TOTAL_VALUE")
+	private double totalValue;
 	
 	public ProductPayment() {
 	}
 
-	public ProductPayment(long id, Administrator productSeller, List<Product> productsList) {
+	public ProductPayment(long id, Administrator productSeller, List<Product> productsList, double totalValue) {
 		super();
 		this.id = id;
 		this.productsList = productsList;
 		this.productSeller = productSeller;
+		this.totalValue = totalValue;
 	}
 
 	public long getId() {
@@ -61,39 +67,14 @@ public class ProductPayment {
 		this.productSeller = productSeller;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((productSeller == null) ? 0 : productSeller.hashCode());
-		result = prime * result + ((productsList == null) ? 0 : productsList.hashCode());
-		return result;
+	public double getTotalValue() {
+		return totalValue;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ProductPayment other = (ProductPayment) obj;
-		if (id != other.id)
-			return false;
-		if (productSeller == null) {
-			if (other.productSeller != null)
-				return false;
-		} else if (!productSeller.equals(other.productSeller))
-			return false;
-		if (productsList == null) {
-			if (other.productsList != null)
-				return false;
-		} else if (!productsList.equals(other.productsList))
-			return false;
-		return true;
+	public void setTotalValue(double totalValue) {
+		this.totalValue = totalValue;
 	}
+
 	
 	
 

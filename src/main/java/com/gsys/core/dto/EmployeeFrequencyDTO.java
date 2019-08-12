@@ -5,17 +5,15 @@ import java.util.Date;
 public class EmployeeFrequencyDTO {
 	private long id;
 	private Date date;
-	private String hour;
 	private long employee;
 	
 	public EmployeeFrequencyDTO() {
 	}
 	
-	public EmployeeFrequencyDTO(long id, Date date, String hour, long employee) {
+	public EmployeeFrequencyDTO(long id, Date date, long employee) {
 		super();
 		this.id = id;
 		this.date = date;
-		this.hour = hour;
 		this.employee = employee;
 	}
 	public long getId() {
@@ -29,12 +27,6 @@ public class EmployeeFrequencyDTO {
 	}
 	public void setDate(Date date) {
 		this.date = date;
-	}
-	public String getHour() {
-		return hour;
-	}
-	public void setHour(String hour) {
-		this.hour = hour;
 	}
 	
 	public long getEmployee() {

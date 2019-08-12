@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,11 +14,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "MEMBER_PAYMENT")
+@EntityListeners(AuditingEntityListener.class)
 public class MemberPayment {
 	@Id
 	@GeneratedValue
@@ -27,6 +30,7 @@ public class MemberPayment {
 	private Member member;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "MEMBER_PAYMENT_DATE")
+	@CreatedDate
 	private Date date;
 	@Column(name = "value")
 	private double value;

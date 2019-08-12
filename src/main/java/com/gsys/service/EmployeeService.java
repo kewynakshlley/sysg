@@ -13,7 +13,6 @@ import com.gsys.exception.DataNotFoundException;
 import com.gsys.model.Employee;
 import com.gsys.model.EmployeeArrival;
 import com.gsys.model.EmployeeExit;
-import com.gsys.model.EmployeeFrequency;
 import com.gsys.model.Notification;
 import com.gsys.repository.EmployeeArrivalRepository;
 import com.gsys.repository.EmployeeExitRepository;
@@ -52,11 +51,11 @@ public class EmployeeService {
 
 	}
 
-	public List<EmployeeFrequency> getEmployeeExitFrequency(long employeeId) {
+	public List<EmployeeExit> getEmployeeExitFrequency(long employeeId) {
 		return employeeExitRepository.findByEmployee(employeeId);
 	}
 
-	public List<EmployeeFrequency> getEmployeeArrivalFrequency(long employeeId) {
+	public List<EmployeeArrival> getEmployeeArrivalFrequency(long employeeId) {
 		return employeeArrivalRepository.findByEmployee(employeeId);
 	}
 
@@ -69,16 +68,14 @@ public class EmployeeService {
 		Employee emp = employeeRepository.getOne(ef.getEmployee());
 		if (emp == null)
 			throw new DataNotFoundException("employee not found");
-		EmployeeArrival ee = new EmployeeArrival();
-		ee.setHour(ee.getHour());
-		ee.setDate(ee.getDate());
+		EmployeeArrival ee = new EmployeeArrival();	
 		ee.setEmployee(emp);
 		emp.getArrivalFrequency().add(ee);
 		ee.setEmployee(emp);
 		EmployeeArrival check = this.employeeArrivalRepository.save(ee);
 		employeeRepository.save(emp);
 		checkInNotification(NotificationUtil.EMPLOYEE_CHECK_IN, "O funcionário "+emp.getFirstName()+" chegou", 
-				NotificationUtil.EXIT_CATEGORY);
+				NotificationUtil.ENTRY_CATEGORY);
 		return new ResponseEntity<EmployeeArrival>(check, HttpStatus.OK);
 	}
 
@@ -87,8 +84,6 @@ public class EmployeeService {
 		if (emp == null)
 			throw new DataNotFoundException("employee not found");
 		EmployeeExit ee = new EmployeeExit();
-		ee.setHour(ee.getHour());
-		ee.setDate(ee.getDate());
 		ee.setEmployee(emp);
 		emp.getExitFrequency().add(ee);
 		ee.setEmployee(emp);
