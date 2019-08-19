@@ -22,7 +22,7 @@ public class Person {
 	@Column(name = "CPF")
 	private String cpf;
 	@Lob
-	@Column(name = "PHOTO")
+	@Column(name = "PHOTO", length = Integer.MAX_VALUE)
 	private String photo;
 	@Column(name = "DATE_OF_BIRTH")
 	private String dateOfBirth;

@@ -46,7 +46,7 @@ public class ProductController {
 	}
 	
 	@PostMapping(path = "/products/buy")
-	public void buyProduct(@RequestBody ProductPaymentDTO productPaymentDTO) throws DataNotFoundException {
+	public void buyProduct(@RequestBody ProductPaymentDTO productPaymentDTO) throws Exception {
 		productService.buyProduct(productPaymentDTO);
 	}
 	
@@ -57,6 +57,11 @@ public class ProductController {
 	@PutMapping(path = "/products/{productId}/update")
 	public void editProduct(@RequestBody Product product) {
 		productService.editProduct(product);
+	}
+	
+	@GetMapping(path = "products/best-sellers")
+	public List<Product> getBestSellers() {
+		return productService.getBestSellers();
 	}
 	
 

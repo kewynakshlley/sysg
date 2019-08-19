@@ -32,7 +32,7 @@ public class ProductService {
 	private NotificationService notificationService;
 	
 	public List<Product> getAllProducts() {
-		return this.productRepository.findAll();
+		return this.productRepository.retrieveProductsInStock();
 	}
 
 	public Product getProduct(long productId) throws DataNotFoundException {
@@ -52,7 +52,7 @@ public class ProductService {
 		this.productRepository.deleteById(productId);
 	}
 
-	public void buyProduct(ProductPaymentDTO productPaymentDTO) throws DataNotFoundException {
+	public void buyProduct(ProductPaymentDTO productPaymentDTO) throws Exception {
 		ProductPayment productPayment = new ProductPayment();
 		Administrator admTemp = administratorRepository.getOne(productPaymentDTO.getSellerId());
 		if(admTemp == null) throw new DataNotFoundException("Seller not found.");
@@ -60,7 +60,9 @@ public class ProductService {
 		productPayment.setTotalValue(productPaymentDTO.getTotalValue());
 		for(ProductDTO pdto: productPaymentDTO.getProducts()) {
 			Product pd = productRepository.getOne(pdto.getProductId());
+			if(pd.getStock() < pdto.getAmount()) throw new Exception("The product of id: "+ pd.getId()+ "don't have enough stock.");
 			pd.setStock(pd.getStock() - pdto.getAmount());
+			pd.setTotolSold(pd.getTotolSold() + pdto.getAmount());
 			productPayment.getProductsList().add(pd);
 		}
 		admTemp.getProductPayment().add(productPayment);
@@ -87,6 +89,10 @@ public class ProductService {
 		nf.setDescription(description);
 		nf.setCategory(category);
 		notificationService.saveNotification(nf);
+	}
+
+	public List<Product> getBestSellers() {
+		return productRepository.findBestSellers();
 	}
 	
 

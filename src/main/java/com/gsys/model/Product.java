@@ -32,14 +32,17 @@ public class Product {
 	@JsonIgnore
 	private List<ProductPayment> productsPayment;
 	@Lob
-	@Column(name = "PHOTO")
+	@Column(name = "PHOTO", length = Integer.MAX_VALUE)
 	private String photo;
 	@Column(name = "VALUE")
 	private double value;
+	@JsonIgnore
+	@Column(name = "TOTAL_SOLD")
+	private int totolSold;
 	
 	public Product () {}
 
-	public Product(long id, String name, String description, int stock,Date expirationDate,String productReference, List<ProductPayment> productsPayment, String photo, double value) {
+	public Product(long id, String name, String description, int stock,Date expirationDate,String productReference, List<ProductPayment> productsPayment, String photo, double value, int totolSold) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -50,6 +53,7 @@ public class Product {
 		this.expirationDate = expirationDate;
 		this.productReference = productReference;
 		this.value = value;
+		this.totolSold = totolSold;
 	}
 
 	public long getId() {
@@ -125,5 +129,15 @@ public class Product {
 	public void setValue(double value) {
 		this.value = value;
 	}
+
+	public int getTotolSold() {
+		return totolSold;
+	}
+
+	public void setTotolSold(int totolSold) {
+		this.totolSold = totolSold;
+	}
+	
+	
 	
 }

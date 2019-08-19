@@ -1,7 +1,6 @@
 package com.gsys.model;
 
-import java.util.Date;
-
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -24,10 +23,11 @@ public class EmployeeCheckIn {
 	@Id
 	@GeneratedValue
 	private long id;
+	@JsonIgnore
 	@Column(name = "DATE_TIME")
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@CreatedDate
-	private Date dateTime;
+	private Calendar dateTime;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="EMPLOYEE_ID")
 	@JsonIgnore
@@ -35,7 +35,7 @@ public class EmployeeCheckIn {
 	
 	public EmployeeCheckIn() {}
 
-	public EmployeeCheckIn(long id, Date dateTime, Employee employee) {
+	public EmployeeCheckIn(long id, Calendar dateTime, Employee employee) {
 		super();
 		this.id = id;
 		this.dateTime = dateTime;
@@ -50,11 +50,11 @@ public class EmployeeCheckIn {
 		this.id = id;
 	}
 
-	public Date getDateTime() {
+	public Calendar getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Date dateTime) {
+	public void setDateTime(Calendar dateTime) {
 		this.dateTime = dateTime;
 	}
 

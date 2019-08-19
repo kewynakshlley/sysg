@@ -66,8 +66,18 @@ public class EmployeeController {
 		return employeeService.getEmployeeArrivalFrequency(employeeId);
 	}
 	
-	@PutMapping(path = "employee/edit-employee")
+	@PutMapping(path = "employees/edit-employee")
 	public void editMember(@RequestBody Employee employee) {
 		employeeService.editEmployee(employee);
+	}
+	
+	@GetMapping(path = "employees/didnot-hit-goal")
+	public List<Employee> employeesWhoNotHitTheGoal(){
+		return employeeService.employeesWhoDidnotHitTheGoal();
+	}
+	
+	@GetMapping(path = "employees/hit-goal")
+	public List<Employee> employeesWhoHitTheGoal(){
+		return employeeService.employeesWhoHitTheGoal();
 	}
 }

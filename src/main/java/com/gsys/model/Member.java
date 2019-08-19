@@ -2,8 +2,10 @@ package com.gsys.model;
 
 
 
+
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -11,6 +13,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="MEMBER")
 public class Member extends Person {
+	@Column
+	private int paymentDate;
 	@OneToMany(mappedBy="member")
 	private List<MemberPayment> memberPayments;
 
@@ -18,9 +22,10 @@ public class Member extends Person {
 	}
 
 	public Member(long id, String name, String address, String cpf, String photo, String dateOfBirth, 
-			String gender, List<MemberPayment> memberPayments,  String firstName, String lastName) {
+			String gender, List<MemberPayment> memberPayments,  String firstName, String lastName, int paymentDate) {
 		super(id, name, address, cpf, photo, dateOfBirth, firstName, lastName);
 		this.memberPayments = memberPayments;
+		this.paymentDate = paymentDate;
 	}
 
 	public List<MemberPayment> getMemberPayments() {
@@ -31,34 +36,14 @@ public class Member extends Person {
 		this.memberPayments = memberPayments;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((memberPayments == null) ? 0 : memberPayments.hashCode());
-		return result;
+	public int getPaymentDate() {
+		return paymentDate;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Member other = (Member) obj;
-		if (memberPayments == null) {
-			if (other.memberPayments != null)
-				return false;
-		} else if (!memberPayments.equals(other.memberPayments))
-			return false;
-		return true;
+	public void setPaymentDate(int paymentDate) {
+		this.paymentDate = paymentDate;
 	}
-	
-	
-	
-	
+
 	
 	
 
