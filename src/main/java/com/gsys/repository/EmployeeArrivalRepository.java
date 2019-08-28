@@ -15,5 +15,7 @@ public interface EmployeeArrivalRepository extends JpaRepository<EmployeeArrival
 	List<EmployeeArrival> findByEmployee(@Param("employeeId") long employeeId);
 	@Query(value = " select * from employee_arrival where employee_id = :employeeId order by id desc limit 15", nativeQuery = true)
 	List<EmployeeArrival> findBiweeklyArrival(@Param("employeeId") long employeeId);
+	@Query(value = " select * from employee_arrival where employee_id = :employeeId order by id desc limit 1", nativeQuery = true)
+	EmployeeArrival findLastArrival(@Param("employeeId") long employeeId);
 
 }

@@ -2,8 +2,6 @@ package com.gsys.service;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +44,8 @@ public class EmployeeService {
 	}
 
 	public ResponseEntity<?> createEmployee(Employee employee) {
+		int m = (employee.getWorkGoal().getWorkingTime() * 60) * 15;
+		employee.getWorkGoal().setWorkingTime(m);
 		Employee createdEmployee = this.employeeRepository.save(employee);
 		return new ResponseEntity<Employee>(createdEmployee, HttpStatus.OK);
 	}
@@ -64,6 +64,8 @@ public class EmployeeService {
 	}
 
 	public void editEmployee(Employee employee) {
+		int m = (employee.getWorkGoal().getWorkingTime() * 60) * 15;
+		employee.getWorkGoal().setWorkingTime(m);
 		employeeRepository.save(employee);
 
 	}
@@ -92,7 +94,8 @@ public class EmployeeService {
 		emp.getExitFrequency().add(ee);
 		ee.setEmployee(emp);
 		EmployeeExit check = this.employeeExitRepository.save(ee);
-		employeeRepository.save(emp);
+		addWorkGoal(emp);
+		
 		checkInNotification(NotificationUtil.EMPLOYEE_CHECK_IN, "O funcionário "+emp.getFirstName()+" saiu", 
 				NotificationUtil.EXIT_CATEGORY);
 		return new ResponseEntity<EmployeeExit>(check, HttpStatus.OK);
@@ -105,52 +108,40 @@ public class EmployeeService {
 		nf.setCategory(category);
 		notificationService.saveNotification(nf);
 	}
+	
+	private void addWorkGoal(Employee emp) {
+		int totalWorkingHours = 0;
+		int totalWorkingMinutes = 0;
+		EmployeeArrival arr = employeeArrivalRepository.findLastArrival(emp.getId());
+		EmployeeExit exi = employeeExitRepository.findLastExit(emp.getId());
+		
+		Instant start = null, end = null;
+		start = arr.getDateTime().toInstant();
+		end = exi.getDateTime().toInstant();
+		Duration dur = Duration.between(start, end);
+		totalWorkingHours += dur.toHours();
+		totalWorkingMinutes += dur.toMinutes();
+		totalWorkingMinutes = totalWorkingMinutes + (totalWorkingHours * 60);
+		
+		int workGoal = emp.getWorkGoal().getPaidGoal();
+		emp.getWorkGoal().setPaidGoal(workGoal + totalWorkingMinutes);  
+		
+		employeeRepository.save(emp);
+	}
 
-	public List<Employee> employeesWhoDidnotHitTheGoal(){
-		List<Employee> empList = employeeRepository.findAll();
-		List<Employee> whoDidntHitTheGoal = new ArrayList<>();
-		for(Employee e: empList) {
-			int totalWorkingHours = 0;
-			int totalWorkingMinutes = 0;
-			List<EmployeeArrival> arrList = employeeArrivalRepository.findBiweeklyArrival(e.getId());
-			List<EmployeeExit> exiList = employeeExitRepository.findBiweeklyExit(e.getId());
-			
-			for(int k = 0; k < exiList.size(); k++) {
-				Instant start = null, end = null;
-				start = arrList.get(k).getDateTime().toInstant();
-				end = exiList.get(k).getDateTime().toInstant();
-				Duration dur = Duration.between(end, start);
-				totalWorkingHours += dur.toHours();
-				totalWorkingMinutes += dur.toMinutes();
-				
-			}
-			
-			int notPaidGoal = e.getWorkGoal().getNotPaidGoal();
-			int paidGoal = e.getWorkGoal().getPaidGoal();
-			int workingTime = e.getWorkGoal().getWorkingTime() * 60;
-			if(paidGoal < workingTime) {
-				notPaidGoal += workingTime - paidGoal;
-			}else {
-				if(notPaidGoal > paidGoal - workingTime) 
-					notPaidGoal -= paidGoal - workingTime;
-				else 
-					notPaidGoal = 0;
-			}
-			e.getWorkGoal().setNotPaidGoal(notPaidGoal);
-			e.getWorkGoal().setPaidGoal(paidGoal);
-			employeeRepository.save(e);
-			if(totalWorkingMinutes < workingTime) {	
-				whoDidntHitTheGoal.add(e);
-			}
-			
-		}
-		return whoDidntHitTheGoal;
+	public List<Employee> employeesWhoDontReachedTheGoal(){
+		return employeeRepository.findWhoDontReachedTheGoal();
 	}
 	
-	public List<Employee> employeesWhoHitTheGoal(){
-		List<Employee> aux = employeeRepository.findAll();
-		aux.removeAll(employeesWhoDidnotHitTheGoal());
-		return aux;
+	public List<Employee> employeesWhoReachedTheGoal(){
+		return employeeRepository.findWhoReachedTheGoal();
+	}
+
+	public void employeePayment(long employeeId) {
+		Employee aux = employeeRepository.getOne(employeeId);
+		aux.getWorkGoal().setPaidGoal(0);
+		employeeRepository.save(aux);
+		
 	}
 
 }

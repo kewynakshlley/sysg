@@ -10,6 +10,6 @@ import com.gsys.model.EmployeeExit;
 public interface EmployeeExitRepository extends JpaRepository<EmployeeExit, Long>{
 	@Query(value = "select * from employee_exit where employee_id = :employeeId", nativeQuery = true)
 	List<EmployeeExit> findByEmployee(@Param("employeeId") long employeeId);
-	@Query(value = " select * from employee_exit where employee_id = :employeeId order by id desc limit 15", nativeQuery = true)
-	List<EmployeeExit> findBiweeklyExit(@Param("employeeId") long employeeId);
+	@Query(value = " select * from employee_exit where employee_id = :employeeId order by id desc limit 1", nativeQuery = true)
+	EmployeeExit findLastExit(@Param("employeeId") long employeeId);
 }

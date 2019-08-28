@@ -71,13 +71,18 @@ public class EmployeeController {
 		employeeService.editEmployee(employee);
 	}
 	
-	@GetMapping(path = "employees/didnot-hit-goal")
-	public List<Employee> employeesWhoNotHitTheGoal(){
-		return employeeService.employeesWhoDidnotHitTheGoal();
+	@GetMapping(path = "employees/dont-reached-goal")
+	public List<Employee> employeesWhoDontReachedTheGoal(){
+		return employeeService.employeesWhoDontReachedTheGoal();
 	}
 	
-	@GetMapping(path = "employees/hit-goal")
-	public List<Employee> employeesWhoHitTheGoal(){
-		return employeeService.employeesWhoHitTheGoal();
+	@GetMapping(path = "employees/reached-goal")
+	public List<Employee> employeesWhoReachedTheGoal(){
+		return employeeService.employeesWhoReachedTheGoal();
+	}
+	
+	@PostMapping(path = "employees/{employeeId}/payment")
+	public void employeePayment(@PathVariable long employeeId) {
+		employeeService.employeePayment(employeeId);
 	}
 }

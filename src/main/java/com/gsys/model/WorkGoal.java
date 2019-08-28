@@ -17,20 +17,17 @@ public class WorkGoal {
 	private int workingTime;
 	@Column(name = "PAID_GOAL")
 	private int paidGoal;
-	@Column(name = "NOT_PAID_GOAL")
-	private int notPaidGoal;
 	@JsonIgnore
 	@OneToOne(mappedBy = "workGoal")
 	private Employee employee;
 	
 	public WorkGoal() {}
 
-	public WorkGoal(long id, int workingTime, int paidGoal, int notPaidGoal, Employee employee) {
+	public WorkGoal(long id, int workingTime, int paidGoal, Employee employee) {
 		super();
 		this.id = id;
 		this.workingTime = workingTime;
 		this.paidGoal = paidGoal;
-		this.notPaidGoal = notPaidGoal;
 		this.employee = employee;
 	}
 
@@ -56,14 +53,6 @@ public class WorkGoal {
 
 	public void setPaidGoal(int paidGoal) {
 		this.paidGoal = paidGoal;
-	}
-
-	public int getNotPaidGoal() {
-		return notPaidGoal;
-	}
-
-	public void setNotPaidGoal(int notPaidGoal) {
-		this.notPaidGoal = notPaidGoal;
 	}
 
 	public Employee getEmployee() {

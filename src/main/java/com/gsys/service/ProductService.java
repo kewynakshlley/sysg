@@ -53,6 +53,7 @@ public class ProductService {
 	}
 
 	public void buyProduct(ProductPaymentDTO productPaymentDTO) throws Exception {
+		int totalProducts = 0;
 		ProductPayment productPayment = new ProductPayment();
 		Administrator admTemp = administratorRepository.getOne(productPaymentDTO.getSellerId());
 		if(admTemp == null) throw new DataNotFoundException("Seller not found.");
@@ -61,13 +62,14 @@ public class ProductService {
 		for(ProductDTO pdto: productPaymentDTO.getProducts()) {
 			Product pd = productRepository.getOne(pdto.getProductId());
 			if(pd.getStock() < pdto.getAmount()) throw new Exception("The product of id: "+ pd.getId()+ "don't have enough stock.");
+			totalProducts += pdto.getAmount();
 			pd.setStock(pd.getStock() - pdto.getAmount());
 			pd.setTotolSold(pd.getTotolSold() + pdto.getAmount());
 			productPayment.getProductsList().add(pd);
 		}
 		admTemp.getProductPayment().add(productPayment);
 		
-		generateProductNotification(NotificationUtil.PRODUCT_SALE, productPaymentDTO.getProducts().size()+" produtos vendidos",
+		generateProductNotification(NotificationUtil.PRODUCT_SALE, totalProducts+" produtos vendidos",
 				NotificationUtil.SALE_CATEGORY);
 		this.administratorRepository.save(admTemp);
 		this.productPaymentRepository.save(productPayment);
